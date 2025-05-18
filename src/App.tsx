@@ -21,7 +21,7 @@ const Study: React.FC = () => {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [studyMode, setStudyMode] = useState<StudyModeType>('smart');
+  const [studyMode, setStudyMode] = useState<'classic' | 'smart'>('smart');
   
   const filteredCards = filterByCategory(selectedCategory);
   
@@ -37,13 +37,13 @@ const Study: React.FC = () => {
       <div className="study-container">
         <div className="study-mode-switch">
           <button 
-            className={`mode-btn ${studyMode === 'classic' ? 'active' : ''}`}
+            className={`mode-btn ${(studyMode as StudyModeType) === 'classic' ? 'active' : ''}`}
             onClick={() => setStudyMode('classic')}
           >
             Classic Mode
           </button>
           <button 
-            className={`mode-btn ${studyMode === 'smart' ? 'active' : ''}`}
+            className={`mode-btn ${(studyMode as StudyModeType) === 'smart' ? 'active' : ''}`}
             onClick={() => setStudyMode('smart')}
           >
             Smart Mode
@@ -74,13 +74,13 @@ const Study: React.FC = () => {
       <div className="study-container">
         <div className="study-mode-switch">
           <button 
-            className={`mode-btn ${studyMode === 'classic' ? 'active' : ''}`}
+            className={`mode-btn ${(studyMode as StudyModeType) === 'classic' ? 'active' : ''}`}
             onClick={() => setStudyMode('classic')}
           >
             Classic Mode
           </button>
           <button 
-            className={`mode-btn ${studyMode === 'smart' ? 'active' : ''}`}
+            className={`mode-btn ${(studyMode as StudyModeType) === 'smart' ? 'active' : ''}`}
             onClick={() => setStudyMode('smart')}
           >
             Smart Mode
@@ -133,13 +133,13 @@ const Study: React.FC = () => {
     <div className="study-container">
       <div className="study-mode-switch">
         <button 
-          className={`mode-btn ${studyMode === 'classic' ? 'active' : ''}`}
+          className={`mode-btn ${(studyMode as StudyModeType) === 'classic' ? 'active' : ''}`}
           onClick={() => setStudyMode('classic')}
         >
           Classic Mode
         </button>
         <button 
-          className={`mode-btn ${studyMode === 'smart' ? 'active' : ''}`}
+          className={`mode-btn ${(studyMode as StudyModeType) === 'smart' ? 'active' : ''}`}
           onClick={() => setStudyMode('smart')}
         >
           Smart Mode
