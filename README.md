@@ -1,13 +1,35 @@
 # FlipLearn
 
-FlipLearn is a simple, interactive flashcard application built with React and TypeScript. It helps users memorize and learn new information through digital flashcards with questions and answers.
+A modern flashcard application built with React for effective learning and memory retention.
 
 ## Features
 
-- Interactive flashcards with flip animation
-- Navigation between cards
-- Simple and intuitive user interface
-- Responsive design for various screen sizes
+- Interactive flashcards with smooth flip animations
+- Modern glass-morphism UI effects
+- Dark and light theme support
+- Category filtering
+- Confidence ratings for tracking progress
+- Statistics dashboard
+- Keyboard shortcuts for efficient navigation
+
+## Getting Started
+
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Start the development server: `npm start`
+4. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+## Technologies Used
+
+- React
+- TypeScript
+- CSS with modern glass effects and animations
+- Context API for state management
+- Custom hooks for keyboard shortcuts and local storage
+
+## License
+
+This project is licensed under the MIT License.
 
 ## Installation
 
@@ -34,13 +56,6 @@ npm start
 ```
 
 5. Open your browser and visit [http://localhost:3000](http://localhost:3000)
-
-## Technologies Used
-
-- React
-- TypeScript
-- CSS3
-- Material UI components
 
 ## How to Use
 
