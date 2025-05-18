@@ -1,46 +1,65 @@
-# Getting Started with Create React App
+# FlipLearn
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+FlipLearn is a simple, interactive flashcard application built with React and TypeScript. It helps users memorize and learn new information through digital flashcards with questions and answers.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- Interactive flashcards with flip animation
+- Navigation between cards
+- Simple and intuitive user interface
+- Responsive design for various screen sizes
 
-### `npm start`
+## Installation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+To run this project locally, follow these steps:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+1. Clone the repository:
+```bash
+git clone https://github.com/Gunjanmishra481/FlipLearn.git
+```
 
-### `npm test`
+2. Navigate to the project directory:
+```bash
+cd FlipLearn
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3. Install dependencies:
+```bash
+npm install
+```
 
-### `npm run build`
+4. Start the development server:
+```bash
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+5. Open your browser and visit [http://localhost:3000](http://localhost:3000)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Technologies Used
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- React
+- TypeScript
+- CSS3
+- Material UI components
 
-### `npm run eject`
+## How to Use
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Click on a flashcard to flip between question and answer
+- Use the "Previous" and "Next" buttons to navigate between cards
+- The "Flip" button also toggles between question and answer view
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Future Enhancements
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- Add ability to create and edit flashcards
+- Implement categories and decks
+- Add user authentication
+- Add progress tracking functionality
+- Create mobile app version
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## License
 
-## Learn More
+MIT
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Author
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Gunjan Mishra
