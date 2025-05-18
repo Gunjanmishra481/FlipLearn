@@ -39,49 +39,47 @@ const Flashcard: React.FC<FlashcardProps> = ({
       <motion.div 
         className={`flashcard ${showAnswer ? 'flipped' : ''}`}
         onClick={handleFlip}
-        initial={{ rotateY: 0 }}
+        initial={false}
         animate={{ rotateY: showAnswer ? 180 : 0 }}
         transition={{ duration: 0.6, type: 'spring', stiffness: 80 }}
-        whileHover={{ scale: 1.03 }}
         style={{ 
+          transformStyle: 'preserve-3d',
           borderTop: `4px solid ${difficultyColor[card.difficulty]}`
         }}
       >
-        <div className="flashcard-inner">
-          <div className="flashcard-front">
-            <div className="category-tag" style={{ backgroundColor: getCategoryColor(card.category) }}>
-              {card.category}
-            </div>
-            <h2>Question:</h2>
-            <p>{card.question}</p>
-            <div className="card-hint">(Click to flip)</div>
+        <div className="flashcard-front">
+          <div className="category-tag" style={{ backgroundColor: getCategoryColor(card.category) }}>
+            {card.category}
           </div>
-          <div className="flashcard-back">
-            <div className="category-tag" style={{ backgroundColor: getCategoryColor(card.category) }}>
-              {card.category}
-            </div>
-            <h2>Answer:</h2>
-            <p>{card.answer}</p>
-            {onConfidenceRating && (
-              <div className="confidence-rating">
-                <p>How well did you know this?</p>
-                <div className="rating-buttons">
-                  {[1, 2, 3, 4, 5].map(level => (
-                    <button 
-                      key={level}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onConfidenceRating(level);
-                      }}
-                      className={`rating-btn rating-${level}`}
-                    >
-                      {level}
-                    </button>
-                  ))}
-                </div>
+          <h2>Question:</h2>
+          <p>{card.question}</p>
+          <div className="card-hint">(Click to flip)</div>
+        </div>
+        <div className="flashcard-back">
+          <div className="category-tag" style={{ backgroundColor: getCategoryColor(card.category) }}>
+            {card.category}
+          </div>
+          <h2>Answer:</h2>
+          <p>{card.answer}</p>
+          {onConfidenceRating && (
+            <div className="confidence-rating">
+              <p>How well did you know this?</p>
+              <div className="rating-buttons">
+                {[1, 2, 3, 4, 5].map(level => (
+                  <button 
+                    key={level}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onConfidenceRating(level);
+                    }}
+                    className={`rating-btn rating-${level}`}
+                  >
+                    {level}
+                  </button>
+                ))}
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </motion.div>
     </div>
