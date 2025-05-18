@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Flashcard as FlashcardType } from '../types';
 import '../styles/Flashcard.css';
 
@@ -36,18 +35,18 @@ const Flashcard: React.FC<FlashcardProps> = ({
 
   return (
     <div className="flashcard-container">
-      <motion.div 
-        className={`flashcard ${showAnswer ? 'flipped' : ''}`}
+      <div 
+        className="flashcard"
         onClick={handleFlip}
-        initial={false}
-        animate={{ rotateY: showAnswer ? 180 : 0 }}
-        transition={{ duration: 0.6, type: 'spring', stiffness: 80 }}
-        style={{ 
-          transformStyle: 'preserve-3d',
-          borderTop: `4px solid ${difficultyColor[card.difficulty]}`
-        }}
+        aria-pressed={showAnswer}
       >
-        <div className="flashcard-front">
+        {/* Question Side */}
+        <div 
+          className="flashcard-front"
+          style={{ 
+            borderTop: `4px solid ${difficultyColor[card.difficulty]}`
+          }}
+        >
           <div className="category-tag" style={{ backgroundColor: getCategoryColor(card.category) }}>
             {card.category}
           </div>
@@ -55,7 +54,14 @@ const Flashcard: React.FC<FlashcardProps> = ({
           <p>{card.question}</p>
           <div className="card-hint">(Click to flip)</div>
         </div>
-        <div className="flashcard-back">
+        
+        {/* Answer Side */}
+        <div 
+          className="flashcard-back"
+          style={{ 
+            borderTop: `4px solid ${difficultyColor[card.difficulty]}`
+          }}
+        >
           <div className="category-tag" style={{ backgroundColor: getCategoryColor(card.category) }}>
             {card.category}
           </div>
@@ -81,7 +87,7 @@ const Flashcard: React.FC<FlashcardProps> = ({
             </div>
           )}
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };

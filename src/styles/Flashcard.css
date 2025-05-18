@@ -1,62 +1,91 @@
 .flashcard-container {
-  perspective: 1000px;
   width: 100%;
   max-width: 500px;
   height: 300px;
   margin: 0 auto;
+  perspective: 1000px;
+  position: relative;
 }
 
 .flashcard {
-  position: relative;
   width: 100%;
   height: 100%;
   cursor: pointer;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  background-color: white;
-  transform-style: preserve-3d; /* Important for 3D effect */
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
 .flashcard-front, .flashcard-back {
   position: absolute;
   width: 100%;
   height: 100%;
-  -webkit-backface-visibility: hidden; /* Safari support */
+  top: 0;
+  left: 0;
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 2rem;
-  border-radius: 12px;
-  background-color: white;
-  overflow: auto;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-md);
+  background-color: var(--card-bg);
+  background-image: var(--glass-gradient);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
 }
 
-.flashcard-front h2,
-.flashcard-back h2 {
-  margin-bottom: 1rem;
-  color: #333;
-  font-size: 1.5rem;
+.flashcard-front::before, .flashcard-back::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--card-highlight);
+  transform: rotate(30deg);
+  transition: transform 0.7s;
+  pointer-events: none;
 }
 
-.flashcard-front p,
-.flashcard-back p {
-  font-size: 1.2rem;
-  line-height: 1.5;
-  color: #333;
+.flashcard:hover .flashcard-front::before,
+.flashcard:hover .flashcard-back::before {
+  transform: translateX(200%) rotate(30deg);
+}
+
+/* Position front and back */
+.flashcard-front {
+  z-index: 1;
 }
 
 .flashcard-back {
   transform: rotateY(180deg);
 }
 
+.flashcard-front h2,
+.flashcard-back h2 {
+  margin-bottom: 1rem;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.flashcard-front p,
+.flashcard-back p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: var(--text-color);
+  text-align: center;
+}
+
 .card-hint {
   position: absolute;
   bottom: 10px;
   font-size: 0.8rem;
-  color: #888;
+  color: var(--text-color);
+  opacity: 0.6;
   width: 100%;
   text-align: center;
 }
@@ -65,11 +94,12 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  padding: 5px 10px;
+  padding: 6px 12px;
   border-radius: 20px;
   font-size: 0.8rem;
   color: white;
   font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .confidence-rating {
@@ -80,74 +110,71 @@
 .confidence-rating p {
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
+  text-align: center;
+  color: var(--text-color);
 }
 
 .rating-buttons {
   display: flex;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .rating-btn {
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: none;
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.2s, background-color 0.2s;
+  transition: all 0.3s;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .rating-btn:hover {
-  transform: scale(1.1);
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 .rating-1 {
-  background-color: #f44336;
+  background: linear-gradient(135deg, #f44336, #d32f2f);
   color: white;
 }
 
 .rating-2 {
-  background-color: #ff9800;
+  background: linear-gradient(135deg, #ff9800, #f57c00);
   color: white;
 }
 
 .rating-3 {
-  background-color: #ffc107;
+  background: linear-gradient(135deg, #ffc107, #ffb300);
   color: #333;
 }
 
 .rating-4 {
-  background-color: #8bc34a;
+  background: linear-gradient(135deg, #8bc34a, #689f38);
   color: white;
 }
 
 .rating-5 {
-  background-color: #4caf50;
+  background: linear-gradient(135deg, #4caf50, #388e3c);
   color: white;
 }
 
 /* Dark mode support */
-[data-theme="dark"] .flashcard {
-  background-color: #2c2c2c;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-}
-
 [data-theme="dark"] .flashcard-front,
 [data-theme="dark"] .flashcard-back {
-  background-color: #2c2c2c;
+  background-color: var(--card-bg);
 }
 
-[data-theme="dark"] .flashcard-front h2,
-[data-theme="dark"] .flashcard-back h2 {
-  color: #e0e0e0;
+[data-theme="dark"] .rating-3 {
+  color: #212121;
 }
 
-[data-theme="dark"] .flashcard-front p,
-[data-theme="dark"] .flashcard-back p {
-  color: #e0e0e0;
-}
-
-[data-theme="dark"] .card-hint {
-  color: #aaa;
+/* Apply the flip animation when pressed */
+.flashcard[aria-pressed="true"] {
+  transform: rotateY(180deg);
 } 
