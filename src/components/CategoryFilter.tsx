@@ -1,5 +1,6 @@
 import React from 'react';
 import { Category } from '../types';
+import { useFlashcards } from '../contexts/FlashcardContext';
 import '../styles/CategoryFilter.css';
 
 interface CategoryFilterProps {
@@ -13,6 +14,14 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
   selectedCategory, 
   onSelectCategory 
 }) => {
+  const { loadMoreCards, isLoading } = useFlashcards();
+
+  const handleLoadMore = async () => {
+    if (selectedCategory) {
+      await loadMoreCards(selectedCategory);
+    }
+  };
+
   return (
     <div className="category-filter">
       <h3>Categories</h3>
@@ -39,6 +48,18 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
           </button>
         ))}
       </div>
+      
+      {selectedCategory && (
+        <div className="load-more-container">
+          <button 
+            className="load-more-btn"
+            onClick={handleLoadMore}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Loading...' : 'Load More Cards'}
+          </button>
+        </div>
+      )}
     </div>
   );
 };
