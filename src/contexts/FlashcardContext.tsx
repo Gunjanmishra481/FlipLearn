@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import { Flashcard, Category } from '../types';
+import { calculateNextReviewDate, calculateReviewPriority, calculateCategoryMastery } from '../utils/spacedRepetition';
 
 interface FlashcardContextType {
   cards: Flashcard[];
@@ -10,6 +11,10 @@ interface FlashcardContextType {
   addCategory: (category: Omit<Category, 'id'>) => void;
   filterByCategory: (category: string | null) => Flashcard[];
   updateCardConfidence: (id: number, level: number) => void;
+  getDueCards: (count?: number) => Flashcard[];
+  getCategoryMastery: (categoryName: string) => number;
+  getOverallMastery: () => number;
+  getSmartStudySet: (count: number) => Flashcard[];
 }
 
 const initialCategories: Category[] = [
@@ -89,7 +94,8 @@ export const FlashcardProvider: React.FC<{ children: ReactNode }> = ({ children 
       ...card,
       id: Date.now(),
       lastReviewed: new Date(),
-      confidenceLevel: 0
+      confidenceLevel: 0,
+      reviewCount: 0
     };
     setCards(prev => [...prev, newCard]);
   };
@@ -119,11 +125,75 @@ export const FlashcardProvider: React.FC<{ children: ReactNode }> = ({ children 
 
   const updateCardConfidence = (id: number, level: number) => {
     setCards(prev => 
-      prev.map(card => card.id === id 
-        ? { ...card, confidenceLevel: level, lastReviewed: new Date() } 
-        : card
-      )
+      prev.map(card => {
+        if (card.id === id) {
+          const reviewCount = (card.reviewCount || 0) + 1;
+          const nextReviewDate = calculateNextReviewDate(level, reviewCount);
+          
+          return { 
+            ...card, 
+            confidenceLevel: level, 
+            lastReviewed: new Date(),
+            nextReviewDate,
+            reviewCount
+          };
+        }
+        return card;
+      })
     );
+  };
+
+  // Get cards that are due for review based on spaced repetition algorithm
+  const getDueCards = (count?: number): Flashcard[] => {
+    // Sort cards by priority (overdue cards and low confidence first)
+    const sortedCards = [...cards].sort((a, b) => {
+      const priorityA = calculateReviewPriority(
+        a.confidenceLevel, 
+        a.lastReviewed && new Date(a.lastReviewed), 
+        a.nextReviewDate && new Date(a.nextReviewDate)
+      );
+      const priorityB = calculateReviewPriority(
+        b.confidenceLevel, 
+        b.lastReviewed && new Date(b.lastReviewed), 
+        b.nextReviewDate && new Date(b.nextReviewDate)
+      );
+      return priorityB - priorityA;
+    });
+
+    // Return all cards or a subset if count provided
+    return count ? sortedCards.slice(0, count) : sortedCards;
+  };
+
+  // Calculate mastery level for a specific category
+  const getCategoryMastery = (categoryName: string): number => {
+    const categoryCards = cards.filter(card => card.category === categoryName);
+    return calculateCategoryMastery(categoryCards);
+  };
+
+  // Calculate overall mastery level
+  const getOverallMastery = (): number => {
+    return calculateCategoryMastery(cards);
+  };
+
+  // Get a smart study set that prioritizes due cards but includes
+  // a mix of mastered and new content for optimal learning
+  const getSmartStudySet = (count: number): Flashcard[] => {
+    const dueCards = getDueCards();
+    
+    // If we have enough due cards, just return those
+    if (dueCards.length >= count) return dueCards.slice(0, count);
+    
+    // Otherwise, add some random cards from the rest of the deck
+    // to complete the study set
+    const remainingCount = count - dueCards.length;
+    const reviewedCardIds = new Set(dueCards.map(card => card.id));
+    
+    const otherCards = cards
+      .filter(card => !reviewedCardIds.has(card.id))
+      .sort(() => Math.random() - 0.5) // Shuffle remaining cards
+      .slice(0, remainingCount);
+    
+    return [...dueCards, ...otherCards];
   };
 
   return (
@@ -135,7 +205,11 @@ export const FlashcardProvider: React.FC<{ children: ReactNode }> = ({ children 
       deleteCard, 
       addCategory,
       filterByCategory,
-      updateCardConfidence
+      updateCardConfidence,
+      getDueCards,
+      getCategoryMastery,
+      getOverallMastery,
+      getSmartStudySet
     }}>
       {children}
     </FlashcardContext.Provider>

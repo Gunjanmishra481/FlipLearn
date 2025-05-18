@@ -7,9 +7,13 @@ import Flashcard from './components/Flashcard';
 import CategoryFilter from './components/CategoryFilter';
 import CreateCardForm from './components/CreateCardForm';
 import StatsDisplay from './components/StatsDisplay';
+import SmartStudyMode from './components/SmartStudyMode';
+import LearningInsights from './components/LearningInsights';
 import useKeyboardShortcuts from './hooks/useKeyboardShortcuts';
 import './styles/global.css';
 import './App.css';
+
+type StudyModeType = 'classic' | 'smart';
 
 const Study: React.FC = () => {
   const { cards, categories, filterByCategory, updateCardConfidence } = useFlashcards();
@@ -17,6 +21,7 @@ const Study: React.FC = () => {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [studyMode, setStudyMode] = useState<StudyModeType>('smart');
   
   const filteredCards = filterByCategory(selectedCategory);
   
@@ -30,6 +35,21 @@ const Study: React.FC = () => {
   if (filteredCards.length === 0) {
     return (
       <div className="study-container">
+        <div className="study-mode-switch">
+          <button 
+            className={`mode-btn ${studyMode === 'classic' ? 'active' : ''}`}
+            onClick={() => setStudyMode('classic')}
+          >
+            Classic Mode
+          </button>
+          <button 
+            className={`mode-btn ${studyMode === 'smart' ? 'active' : ''}`}
+            onClick={() => setStudyMode('smart')}
+          >
+            Smart Mode
+          </button>
+        </div>
+        
         <CategoryFilter 
           categories={categories}
           selectedCategory={selectedCategory}
@@ -48,6 +68,37 @@ const Study: React.FC = () => {
     );
   }
   
+  // If smart mode, render SmartStudyMode
+  if (studyMode === 'smart') {
+    return (
+      <div className="study-container">
+        <div className="study-mode-switch">
+          <button 
+            className={`mode-btn ${studyMode === 'classic' ? 'active' : ''}`}
+            onClick={() => setStudyMode('classic')}
+          >
+            Classic Mode
+          </button>
+          <button 
+            className={`mode-btn ${studyMode === 'smart' ? 'active' : ''}`}
+            onClick={() => setStudyMode('smart')}
+          >
+            Smart Mode
+          </button>
+        </div>
+        
+        <CategoryFilter 
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
+        />
+        
+        <SmartStudyMode />
+      </div>
+    );
+  }
+  
+  // Classic mode
   const handleNextCard = () => {
     setCurrentCardIndex((prevIndex) => (prevIndex + 1) % filteredCards.length);
     setShowAnswer(false);
@@ -80,6 +131,21 @@ const Study: React.FC = () => {
   
   return (
     <div className="study-container">
+      <div className="study-mode-switch">
+        <button 
+          className={`mode-btn ${studyMode === 'classic' ? 'active' : ''}`}
+          onClick={() => setStudyMode('classic')}
+        >
+          Classic Mode
+        </button>
+        <button 
+          className={`mode-btn ${studyMode === 'smart' ? 'active' : ''}`}
+          onClick={() => setStudyMode('smart')}
+        >
+          Smart Mode
+        </button>
+      </div>
+      
       <CategoryFilter 
         categories={categories}
         selectedCategory={selectedCategory}
@@ -142,41 +208,35 @@ const Stats: React.FC = () => {
   const { progress } = useProgress();
   const { cards, categories } = useFlashcards();
   
-  // Calculate category statistics
-  const categoryStats = categories.map(category => {
-    const categoryCards = cards.filter(card => card.category === category.name);
-    const avgConfidence = categoryCards.length > 0 
-      ? categoryCards.reduce((sum, card) => sum + (card.confidenceLevel || 0), 0) / categoryCards.length
-      : 0;
-      
-    return {
-      name: category.name,
-      count: categoryCards.length,
-      color: category.color,
-      avgConfidence: avgConfidence
-    };
-  });
-  
   return (
     <div className="stats-container">
       <StatsDisplay progress={progress} />
       
+      <LearningInsights />
+      
       <div className="category-stats">
         <h3>Category Breakdown</h3>
         <div className="category-stats-grid">
-          {categoryStats.map(stat => (
-            <div 
-              key={stat.name} 
-              className="category-stat-card"
-              style={{ borderLeft: `4px solid ${stat.color}` }}
-            >
-              <h4>{stat.name}</h4>
-              <p><strong>{stat.count}</strong> cards</p>
-              <p>
-                <strong>Avg. confidence:</strong> {stat.avgConfidence.toFixed(1)}/5
-              </p>
-            </div>
-          ))}
+          {categories.map(category => {
+            const categoryCards = cards.filter(card => card.category === category.name);
+            const avgConfidence = categoryCards.length > 0 
+              ? categoryCards.reduce((sum, card) => sum + (card.confidenceLevel || 0), 0) / categoryCards.length
+              : 0;
+              
+            return (
+              <div 
+                key={category.name} 
+                className="category-stat-card glass-card"
+                style={{ borderLeft: `4px solid ${category.color}` }}
+              >
+                <h4>{category.name}</h4>
+                <p><strong>{categoryCards.length}</strong> cards</p>
+                <p>
+                  <strong>Avg. confidence:</strong> {avgConfidence.toFixed(1)}/5
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

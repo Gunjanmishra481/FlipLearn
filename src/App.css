@@ -98,7 +98,7 @@
 .category-stat-card {
   background-color: var(--bg-color);
   border-radius: 8px;
-  padding: 1rem;
+  padding: 1.2rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s;
 }
@@ -125,6 +125,38 @@
   padding: 1rem;
 }
 
+/* Study Mode Switch */
+.study-mode-switch {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.mode-btn {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--card-bg);
+  color: var(--text-color);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.mode-btn.active {
+  background: linear-gradient(135deg, var(--primary-color), rgba(74, 140, 255, 0.8));
+  color: white;
+  border-color: transparent;
+}
+
+.mode-btn:hover:not(.active) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
 /* Responsive styles */
 @media (max-width: 600px) {
   .control-btn {
@@ -134,5 +166,16 @@
   
   .category-stats-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .study-mode-switch {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 1.5rem;
+  }
+  
+  .mode-btn {
+    width: 100%;
   }
 }
