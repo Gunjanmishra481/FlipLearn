@@ -56,10 +56,4 @@ npm start
 - Add progress tracking functionality
 - Create mobile app version
 
-## License
 
-MIT
-
-## Author
-
-Gunjan Mishra
